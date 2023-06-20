@@ -7,7 +7,11 @@ import { setRequestHandlersByWebarchive } from '@tapico/msw-webarchive';
 import * as traffic from './testData/example.har.json';
 
 const server = setupServer();
-setRequestHandlersByWebarchive(server, traffic);
+setRequestHandlersByWebarchive(server, traffic, {
+  domainMappings: {
+    "http://localhost:3000": "http://localhost"
+  }
+});
 
 beforeEach(() => {
   server.listen({
@@ -22,7 +26,7 @@ afterEach(() => {
 test('renders learn react link', async () => {
   render(<App />);
 
-  expect(screen.getByText("loading...")).toBeInTheDocument(); 
+  expect(screen.getByText("loading...")).toBeInTheDocument();
 
   expect(await screen.findByText('{"foo":"bar"}')).toBeInTheDocument();
 
